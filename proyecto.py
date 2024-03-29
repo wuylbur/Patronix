@@ -67,10 +67,10 @@ expresiones_regulares = {
   }
 
 #SQL Variables
-server = 'PLX3000003578\SQLEXPRESS'
+server = '**************\SQLEXPRESS'
 database = 'BD_Patronix'
-username = 'sa'
-password = 'Admin.1234'
+username = '************'
+password = '****************'
 
 # Crear una conexión para mas adelante
 cadena_conexion = f'Driver={{SQL Server}};Server={server};Database={database};Uid={username};Pwd={password}'
