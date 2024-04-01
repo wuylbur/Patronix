@@ -207,21 +207,3 @@ ALTER TABLE  [dbo].[Scan_Details_Pattern]
  ADD DEFAULT 0 FOR [Pattern]
 GO
 
-#Insertar los valores de las Expresiones Regulares
-
-/*
-expresiones_regulares = {
-  #Correo Electronico
-  r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b': "Correo Electrónico",
-  # Pasaporte
-  r'\b[A-Z]{1}[0-9A-Z]{1}[0-9]{6,8}\b': "Pasaporte",
-  # Número de la Seguridad Social española
-  r'\d{8}[A-Z]': "Número de la Seguridad Social española",
-  # Código IBAN
-  r'^[A-Z]{2}\d{2}[A-Z0-9]{4}\d{7}([A-Z0-9]?){0,16}$': "Código IBAN",
-  # VAT number (Número de IVA)
-  r'^[A-Z]{2}[0-9A-Z]{2,}$': "VAT number",
-  #Tarjeta Generica
-  r'\b(?:\d[ -]*?){13,16}\b': "Tarjeta de Crédito Genérica"
-  }
-  */
