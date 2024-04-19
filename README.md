@@ -11,7 +11,7 @@ pip install -r requirements.txt
 2. Run the script
 
 ```bash
-python proyect.py
+python proyecto.py
 ```
 
 This Git is part of the Final Degree Project in UNIR
