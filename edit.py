@@ -66,15 +66,11 @@ def cargar_y_mostrar_datos():
     for row in datos:
         tree.insert('', tk.END, values=(row.RE_Name,row.RE_Expression,row.Editable))
 
-
 def back_user():
     root.destroy()
     runpy.run_path("TFG_TKINTER\\users.py")
     
     return
-
-
-# Configuración de la interfaz gráfica
 
 root = tk.Tk()
 frame = tk.Frame(root)
@@ -83,8 +79,6 @@ root.title("Regular Expressions Management")
 root.configure(bg='#151547')
 
 frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
-
-
 tree = ttk.Treeview(frame, columns=('RE_Name', 'RE_Expression', 'Editable'), show='headings')
 tree.heading('RE_Name', text='Name')
 tree.heading('RE_Expression', text='Regular Expression')
