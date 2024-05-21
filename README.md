@@ -8,10 +8,12 @@ Find patterns in different office files stored in a repository
 ```bash
 pip install -r requirements.txt
 ```
-2. Run the script
+2. Review the config.env
+
+3. Run the script
 
 ```bash
-python proyecto.py
+python users.py
 ```
 
 This Git is part of the Final Degree Project in UNIR
