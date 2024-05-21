@@ -11,10 +11,10 @@ try:
             config[key.strip()] = value.strip()
             
 except FileNotFoundError:
-    print(f"Error: No se pudo encontrar el archivo {config_filename}")
+    print(f"Error: Could not find file {config_filename}")
     sys.exit()
 except Exception as e:
-    print(f"Error al leer el archivo {config_filename}: {e}")
+    print(f"Error reading file {config_filename}: {e}")
     sys.exit()
     
 ruta_pbix= config['ruta_pbix']      
@@ -26,12 +26,12 @@ def reportes():
     try:
       comando = ["C:\\Program Files\\WindowsApps\\Microsoft.MicrosoftPowerBIDesktop_2.128.1380.0_x64__8wekyb3d8bbwe\\bin\\PBIDesktop.exe", ruta_pbix]
       subprocess.Popen(comando)
-      print("Archivo PBIX abierto exitosamente.")
+      print("PBIX file successfully opened.")
     except Exception as e:
-      print("Error al abrir el archivo PBIX:", e)
+      print("Error to open PBIX file:", e)
         
   else:
-      print("El archivo .pbix no existe en la ruta especificada.") 
+      print("The .pbix file does not exist in the specified path.") 
 
 
 
