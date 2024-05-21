@@ -21,8 +21,6 @@ win_user.resizable(False,False)
 
 user_text = tku.StringVar()
 password_text = tku.StringVar()
-
-
   
 def iniciar_sesion():
   username = user_text.get()
@@ -45,9 +43,7 @@ def iniciar_sesion():
     grupo="error"
         
   return (grupo)
-        
-        
-
+      
 def reports():
   grupo = iniciar_sesion()
    
@@ -59,7 +55,6 @@ def reports():
   else:
     return  
     
-
 def logIn():
   grupo = iniciar_sesion()
   if grupo == "Admin" or grupo=="Normal":
@@ -67,8 +62,6 @@ def logIn():
     runpy.run_path("TFG_TKINTER\\search.py")
  
   return  
-     
-   
 
 def view_RE():
   grupo = iniciar_sesion()
@@ -87,11 +80,6 @@ def add_RE():
     messagebox.showerror("Warning", "Sorry, you have not permissions. You must be Admin user.")
   else:
     return  
-  
-  
-    
- 
- 
  
 def edit_RE():
   grupo = iniciar_sesion()
@@ -104,13 +92,7 @@ def edit_RE():
   else:
     return  
   
-  
-   
-  
 def abrir_main_users(): 
-  
-
-  # Crear widgets en la ventana
   heading_label = tku.Label(win_user, text="PatroniX Search Tool", font=("Arial", 30, "bold"), bg='#151547',fg="white").place(x=150,y=5)
   heading2_label = tku.Label(win_user, text="Welcome to PatroniX. ", font=font_1,bg='#151547',fg="white", anchor="w").place(x=50,y=70)
   heading3_label = tku.Label(win_user, text="Please, type your user and password and choice one option. ", font=font_1,bg='#151547',fg="white", anchor="w").place(x=50,y=100)
@@ -128,8 +110,7 @@ def abrir_main_users():
   edit_button = tku.Button(win_user, text="Modify", command=edit_RE, font=font_1B).place(x=350, y=340)
   add_button = tku.Button(win_user, text="Add", command=add_RE, font=font_1B).place(x=440, y=340)
   cancel_button= tku.Button (win_user, text="Exit", command=win_user.destroy, font=font_1B).place(x=585, y=340)
-
-  # Ejecutar el bucle de eventos de Tkinter
+ 
   win_user.mainloop()
   
   
