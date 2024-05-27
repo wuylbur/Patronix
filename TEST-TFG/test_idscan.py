@@ -23,5 +23,3 @@ def test_generar_id_scan_format():
     id_scan = generar_id_scan()
     hex_chars = set("0123456789abcdef")
     assert all(c in hex_chars for c in id_scan)
-
-# Puedes agregar más pruebas según sea necesario para cubrir otros casos.
