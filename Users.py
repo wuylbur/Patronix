@@ -1,3 +1,4 @@
+#part of the Final Degree Project in UNIR
 import tkinter as tku
 import tkinter.messagebox as messagebox
 import hashlib
