@@ -1,99 +1,128 @@
-#part of the Final Degree Project in UNIR
+#this code is part of the Final Degree Project in UNIR by Gonzalo Castro
+
+#import package (“Tk interface”) is the standard Python interface to the Tcl/Tk GUI toolkit. 
 import tkinter as tku
 import tkinter.messagebox as messagebox
-import hashlib
-import pyodbc
-import sys
-import runpy
-from connection_database import connection_db, check_db
-from reports import reportes
 
-cadena_conexion=connection_db()
-            
+#This module implements a common interface to many different secure hash and message digest algorithms.
+import hashlib
+
+#module that makes accessing ODBC databases simple
+import pyodbc
+
+#This module provides access to some variables used or maintained by the interpreter and to functions that interact strongly with the interpreter
+import sys
+
+#this module is used to locate and run Python modules without importing them first.
+import runpy
+
+from connection_database import connection_db, check_db
+from reports import reports
+
+connection_string=connection_db()
+ 
+#Font Types
 font_1 = ("Arial",14)
 font_1B = ("Arial",14,"bold")
 font_2B = ("Arial",16, "bold")
 
+#Main window
 win_user = tku.Tk()
 win_user.title("Patronix - Log In")
 win_user.geometry("680x400")
 win_user.configure(bg='#151547')
 win_user.resizable(False,False)
 
+
+#entry user variables
 user_text = tku.StringVar()
 password_text = tku.StringVar()
   
-def iniciar_sesion():
+def log_in():
+  """
+  The user type user and password.
+  Checks if the combination of both are in the database table and if so, returns the user's group
+
+  """
   username = user_text.get()
   password = password_text.get()
     
   if username and password:
       hashed_password = hashlib.sha256(password.encode()).hexdigest()
-      conn = pyodbc.connect(cadena_conexion)
+      conn = pyodbc.connect(connection_string)
       cursor = conn.cursor()
       cursor.execute("SELECT [Group] FROM USERS WHERE [User]=? AND [Password]=?", (username, hashed_password))
       row = cursor.fetchone()
       if row:
-          grupo = row[0]
+          group = row[0]
           messagebox.showinfo("Successful login", "Welcome, {}!".format(username))
       else:
           messagebox.showerror("Login Error", "Invalid username or password.")
-          grupo="error"
+          group="error"
   else:
     messagebox.showwarning("Warning", "Please complete all fields")
-    grupo="error"
+    group="error"
         
-  return (grupo)
+  return (group)
       
 def reports():
-  grupo = iniciar_sesion()
+  
+  #if the group has permission to open REPORTS, proceed. If not, return error.
+  group = log_in()
    
-  if grupo == "Admin":
+  if group == "Admin":
     win_user.destroy()
-    reportes()
-  elif grupo=="Normal":    
+    reports()
+  elif group=="Normal":    
     messagebox.showerror("Warning", "Sorry, you have not permissions. You must be Admin user.")
   else:
     return  
     
 def logIn():
-  grupo = iniciar_sesion()
-  if grupo == "Admin" or grupo=="Normal":
+  #if the group has permission to open SEARCH, proceed. All groups has permission by default.
+  group = log_in()
+  if group == "Admin" or group=="Normal":
     win_user.destroy()
-    runpy.run_path("TFG_TKINTER\\search.py")
+    runpy.run_path("search.py")
  
   return  
 
 def view_RE():
-  grupo = iniciar_sesion()
-  if grupo == "Admin" or grupo=="Normal":
-    runpy.run_path("TFG_TKINTER\\view.py")
+  #if the group has permission to view Regular Expresions, proceed. All groups has permission by default.
+  group = log_in()
+  if group == "Admin" or group=="Normal":
+    runpy.run_path("view.py")
   
   return    
  
 def add_RE():
-  grupo = iniciar_sesion()
+   #if the group has permission to add Regular Expressions, proceed. If not, return error.
+    
+  group = log_in()
    
-  if grupo == "Admin":
+  if group == "Admin":
     win_user.destroy()
-    runpy.run_path("TFG_TKINTER\\add.py")
-  elif grupo=="Normal":    
+    runpy.run_path("add.py")
+  elif group=="Normal":    
     messagebox.showerror("Warning", "Sorry, you have not permissions. You must be Admin user.")
   else:
     return  
  
 def edit_RE():
-  grupo = iniciar_sesion()
-   
-  if grupo == "Admin":
+  #if the group has permission to edit Regular Expressions, proceed. If not, return error.
+  
+  group = log_in()
+  
+  if group == "Admin":
     win_user.destroy()
-    runpy.run_path("TFG_TKINTER\\edit.py")
-  elif grupo=="Normal":    
+    runpy.run_path("edit.py")
+  elif group=="Normal":    
     messagebox.showerror("Warning", "Sorry, you have not permissions. You must be Admin user.")
   else:
     return  
   
-def abrir_main_users(): 
+def open_main_users(): 
+  #main window
   heading_label = tku.Label(win_user, text="PatroniX Search Tool", font=("Arial", 30, "bold"), bg='#151547',fg="white").place(x=150,y=5)
   heading2_label = tku.Label(win_user, text="Welcome to PatroniX. ", font=font_1,bg='#151547',fg="white", anchor="w").place(x=50,y=70)
   heading3_label = tku.Label(win_user, text="Please, type your user and password and choice one option. ", font=font_1,bg='#151547',fg="white", anchor="w").place(x=50,y=100)
@@ -115,11 +144,11 @@ def abrir_main_users():
   win_user.mainloop()
   
   
-if check_db(cadena_conexion):
+if check_db(connection_string):
   print("Successful connection")
   
 else:
-  print("Error en conexion BD ")
+  print("Connection Error in DB ")
   sys.exit()
   
-abrir_main_users() 
+open_main_users() 

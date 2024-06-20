@@ -1,33 +1,55 @@
+#this code is part of the Final Degree Project in UNIR by Gonzalo Castro
+
 from connection_database import connection_db
+
+#import package (“Tk interface”) is the standard Python interface to the Tcl/Tk GUI toolkit. 
 import tkinter as tk
 from tkinter import ttk, messagebox
+
+#module that makes accessing ODBC databases simple
 import pyodbc
+
+#this module is used to locate and run Python modules without importing them first.
 import runpy
 
 font_1B = ("Arial",14,"bold")
-cadena_conexion=connection_db()
+connection_string=connection_db()
 
-def cargar_datos():
-    conn = pyodbc.connect(cadena_conexion)
+def load_data():
+    """
+    load data to connect to database
+    and execute a SELECT to get all Regular Expressions
+    Returns:
+    An array with values: RE_Name, RE_Expression, Editable
+    """
+    conn = pyodbc.connect(connection_string)
     cursor = conn.cursor()
     cursor.execute("SELECT RE_Name, RE_Expression, Editable FROM Reg_Exp order by RE_Name")
     datos = cursor.fetchall()
     conn.close()
     return datos
 
-def cargar_y_mostrar_datos():
+def load_and_display_data():
+    """
+    load all data and show the values in a grid
+    """
+    
     for row in tree.get_children():
         tree.delete(row)
 
-    datos = cargar_datos()
+    datos = load_data()
     for row in datos:
         tree.insert('', tk.END, values=(row.RE_Name,row.RE_Expression,row.Editable))
 
 def back_user():
+    """
+    return to principal window
+    """
     root.destroy()
-    runpy.run_path("TFG_TKINTER\\users.py")
+    runpy.run_path("users.py")
     
     return
+
 
 root = tk.Tk()
 frame = tk.Frame(root)
@@ -49,6 +71,6 @@ tree.pack(fill=tk.BOTH, expand=True)
 boton_back = tk.Button(root, text="Back to User Panel", command=back_user,font=font_1B)
 boton_back.pack(side=tk.LEFT,padx=5,pady=5)
 
-cargar_y_mostrar_datos()
+load_and_display_data()
 
 root.mainloop()

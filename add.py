@@ -1,14 +1,27 @@
+#this code is part of the Final Degree Project in UNIR by Gonzalo Castro
+
+from connection_database import connection_db
+
+#import package (“Tk interface”) is the standard Python interface to the Tcl/Tk GUI toolkit. 
 import tkinter as tka
 import tkinter.messagebox as messagebox
-from connection_database import connection_db
+
+#module that makes accessing ODBC databases simple
 import pyodbc
+
+#this module is used to locate and run Python modules without importing them first.
 import runpy
 
-cadena_conexion=connection_db()
+connection_string=connection_db()
+
+
+#Fonts Type
 font_0= ("Arial",9)
 font_1 = ("Arial",14)
 font_1B = ("Arial",14,"bold")
 font_2B = ("Arial",16, "bold")
+
+#Main window
 
 win_add = tka.Tk()
 win_add.title("Patronix - Add new Regular Expression")
@@ -22,54 +35,60 @@ expression_text = tka.StringVar()
 
 
 def add_data():
+    """
+    To add a new regular expression, we check that we have written in the text boxes,
+    and that neither the name nor the regular expression is repeated
+    """
     name = name_text.get()
     expression = expression_text.get()
     
     if name and expression:
-        #comprobar que no hay repetidos
-        conn = pyodbc.connect(cadena_conexion)
+        #check that there are no duplicates in the name fileds, because we cannot create two with the same name
+        conn = pyodbc.connect(connection_string)
         cursor = conn.cursor()
         cursor.execute("SELECT RE_Name, RE_Expression FROM Reg_Exp WHERE [RE_Name] = ?",(name))
-        datos_name = cursor.fetchall()
+        data_name = cursor.fetchall()
         conn.commit()
         conn.close()
         
-        if datos_name:
+        #if repeats, came back
+        if data_name:
             messagebox.showerror("ERROR", "Name already registered. Choose another, please.")
             return
-               
-        conn = pyodbc.connect(cadena_conexion)
+        
+        #check that there are no duplicates in the expression fileds, because we cannot create two with the same name       
+        conn = pyodbc.connect(connection_string)
         cursor = conn.cursor()
         cursor.execute("SELECT RE_Name, RE_Expression FROM Reg_Exp WHERE [RE_Expression] = ?",(expression))
-        datos_expression=cursor.fetchall()
+        data_expression=cursor.fetchall()
         conn.commit()
         conn.close()
         
-        if datos_expression:
+        #if repeats, came back
+        if data_expression:
           messagebox.showerror("ERROR", "Regular Expression already registered. Choose another, please.")
           return
         
-        conn = pyodbc.connect(cadena_conexion)
+        #if not repeated, inserted
+        conn = pyodbc.connect(connection_string)
         cursor = conn.cursor()
         cursor.execute("INSERT INTO Reg_Exp (RE_Name, RE_Expression, Editable) VALUES (?, ?, ?)", name, expression, "1")
         conn.commit()
         conn.close()
         messagebox.showinfo("Added", "New Regular Expression added successfully")
-        
-        
-        #falta borrar los cuadros de texto
+    
     else:
         messagebox.showwarning("Warning", "Please complete all fields")
    
    
-def back_user():
+def back_user(): #came back to Main Users window
     win_add.destroy()
-    runpy.run_path("TFG_TKINTER\\users.py")
+    runpy.run_path("users.py")
     
     return   
    
        
-def abrir_main_add():
+def open_main_add():
      
     name_entry=tka.Entry(win_add)
     expression_entry=tka.Entry(win_add)
@@ -90,4 +109,4 @@ def abrir_main_add():
     
     win_add.mainloop()
 
-abrir_main_add()
+open_main_add()

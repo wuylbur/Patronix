@@ -1,8 +1,13 @@
+#this code is part of the Final Degree Project in UNIR by Gonzalo Castro
+
+#module that makes accessing ODBC databases simple
 import pyodbc
+
+#This module provides access to some variables used or maintained by the interpreter and to functions that interact strongly with the interpreter
 import sys
 
-def connection_db():
-    config_filename = 'TFG_TKINTER\\config.env'
+def connection_db(): #take the configuration data and create the connection with the database
+    config_filename = 'config.env'
     config = {}
     try:
         with open(config_filename, 'r') as file:
@@ -22,25 +27,16 @@ def connection_db():
     username = config['username']
     password = config['password']
  
-    cadena_conexion = f'Driver={{SQL Server}};Server={server};Database={database};Uid={username};Pwd={password}'
+    connection_string = f'Driver={{SQL Server}};Server={server};Database={database};Uid={username};Pwd={password}'
     
-    return (cadena_conexion)
+    return (connection_string)
 
-def cargar_datos_vista():
-    cadena_conexion=connection_db()
-    conn = pyodbc.connect(cadena_conexion)
-    cursor = conn.cursor()
-    cursor.execute("SELECT RE_Name, RE_Expression, Editable FROM Reg_Exp order by editable")
-    datos = cursor.fetchall()
-    conn.close()
-    return datos
-
-def check_db (cadena_conexion):
+def check_db (connection_string): #check if the database connection is correct
   try:
-      conexion = pyodbc.connect(cadena_conexion)
+      conexion = pyodbc.connect(connection_string)
       return True
   except pyodbc.Error as e:
-      print("Error al conectar:", e)
+      print("Error to connect:", e)
       return False
   finally:
     conexion.close()    
@@ -48,5 +44,5 @@ def check_db (cadena_conexion):
 if __name__ == "__main__":
     connection_db()
     check_db()
-    cargar_datos_vista()
+    
  
